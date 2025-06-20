@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #c7dcd7; /* Main background color */
+      }
+      .container {
+        background-color: #fff; /* The inner container can remain white or be adjusted */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        max-width: 700px;
+        margin: auto;
+      }
+      h2 {
+        color: #0c7654; /* Primary color for the title */
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #0c4454; /* Accent color for labels */
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      input[type="date"],
+      input[type="time"],
+      textarea,
+      select {
+        width: calc(100% - 22px); /* Default width for inputs */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #0c7654; /* Input field border with the primary color */
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+      .radio-group label {
+        display: inline-block;
+        margin-right: 15px;
+        font-weight: normal;
+      }
+      .file-upload-section {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #0c7654; /* Top border of the file upload section */
+      }
+      .file-upload-section label {
+        margin-bottom: 10px;
+      }
+      button {
+        background-color: #0c7654; /* Primary color for the button */
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 20px;
+      }
+      button:hover {
+        background-color: #0c4454; /* Accent color on button hover */
+      }
+      .loading-message {
+        text-align: center;
+        color: #0c7654; /* Primary color for the loading message */
+        margin-top: 10px;
+        display: none;
+      }
+
+      /* --- NEW STYLES FOR BOXES AND SIDE-BY-SIDE LAYOUT --- */
+      .form-box {
+        border: 1px solid #0c7654; /* Box border */
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9fdfc; /* A slightly different background for the box */
+      }
+      .form-box-title {
+        color: #0c7654;
+        font-size: 1.1em;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .form-row {
+        display: flex; /* Enables flexbox for item alignment */
+        flex-wrap: wrap; /* Allows items to wrap to the next line if there's no space */
+        justify-content: space-between; /* Spaces items evenly */
+        margin-bottom: 0; /* Removes default bottom margin from rows */
+      }
+      .form-group {
+        flex: 1; /* Makes groups occupy equal space */
+        min-width: 280px; /* Minimum width to prevent them from becoming too narrow */
+        margin-right: 15px; /* Space between groups */
+        margin-bottom: 15px; /* Space below each group */
+      }
+      .form-group:nth-child(2n) { /* Removes the right margin of the second item in each row */
+        margin-right: 0;
+      }
+      /* Adjustment for inputs within a form-group */
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="number"],
+      .form-group input[type="date"],
+      .form-group input[type="time"] {
+        width: 100%; /* Makes the input occupy 100% of its form-group's width */
+        margin-bottom: 0; /* Removes the default bottom margin from the input, as the form-group already has one */
+      }
+      .form-group datalist {
+        width: 100%; /* Ensures the datalist adjusts */
+      }
+
+      /* Adjustment for when there is only one item in a row, so it occupies the full width */
+      .form-row.single-item .form-group {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      /* Media query for smaller screens (stacks the fields) */
+      @media (max-width: 600px) {
+        .form-group {
+          flex: 100%; /* Occupies 100% of the width on small screens */
+          margin-right: 0; /* Removes right margin on small screens */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h2>Solicitação de Contra-cheque</h2>
+        <form id="solicitacaoEnvioArquivo">
+            <div class="form-box">
+                <div class="form-row single-item">
+                    <div class="form-group">
+                        <label for="fullName">Nome Completo:</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                </div>
+
+                <div class="form-row single-item">
+                    <div class="form-group">
+                        <label>Como deseja receber sua via do Arquivo?</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="deliveryMethod" value="Email" onchange="toggleDeliveryFields()" required>
+                                E-mail
+                            </label>
+                            <label>
+                                <input type="radio" name="deliveryMethod" value="WhatsApp" onchange="toggleDeliveryFields()" required>
+                                WhatsApp
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campo condicional para E-mail -->
+                <div class="form-row single-item" id="emailFieldGroup" style="display:none;">
+                    <div class="form-group">
+                        <label for="emailAddress">E-mail:</label>
+                        <input type="email" id="emailAddress" name="emailAddress" placeholder="seu@email.com">
+                    </div>
+                </div>
+
+                <!-- Campo condicional para WhatsApp -->
+                <div class="form-row single-item" id="whatsappFieldGroup" style="display:none;">
+                    <div class="form-group">
+                        <label for="whatsappNumber">Número do WhatsApp (com DDD):</label>
+                        <input type="text" id="whatsappNumber" name="whatsappNumber" 
+                               placeholder="Ex: 5581987654321" 
+                               pattern="[0-9]{11,13}" 
+                               title="Digite apenas números com DDD">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Enviar Solicitação</button>
+            <div class="loading-message" id="loadingMessage">Enviando...</div>
+        </form>
+    </div>
+  </body>
+  <script>
+    document.getElementById('solicitacaoEnvioArquivo').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const loading = document.getElementById('loadingMessage'); // Corrected ID
+        loading.style.display = 'block';
+
+        // Creates an object to store all form data
+        const data = {};
+        const formData = new FormData(form);
+
+        data.nome = formData.get('fullName');
+        data.entrega = formData.get('deliveryMethod');
+        data.numero = formData.get('whatsappNumber');
+        data.email = formData.get('emailAddress')
+
+        // Calls the server-side function 'processForm' using Google Apps Script's runner
+        google.script.run
+            .withSuccessHandler(function(response) {
+                alert(response);
+                form.reset();
+                loading.style.display = 'none';
+              })
+            .withFailureHandler(function(error) {
+                alert('Erro ao enviar o formulário: ' + error.message);
+                loading.style.display = 'none';
+              })
+            .processForm(data); // Assumes you have a function named 'processForm' in your Code.gs file
+      });
+    
+    function toggleDeliveryFields() {
+            const method = document.querySelector('input[name="deliveryMethod"]:checked').value;
+            const emailGroup = document.getElementById('emailFieldGroup');
+            const whatsappGroup = document.getElementById('whatsappFieldGroup');
+            
+            // Reset dos campos
+            document.getElementById('emailAddress').value = '';
+            document.getElementById('whatsappNumber').value = '';
+            
+            // Esconde ambos os campos
+            emailGroup.style.display = 'none';
+            whatsappGroup.style.display = 'none';
+            
+            // Mostra apenas o campo relevante
+            if (method === 'Email') {
+                emailGroup.style.display = 'block';
+                document.getElementById('emailAddress').required = true;
+                document.getElementById('whatsappNumber').required = false;
+            } else if (method === 'WhatsApp') {
+                whatsappGroup.style.display = 'block';
+                document.getElementById('whatsappNumber').required = true;
+                document.getElementById('emailAddress').required = false;
+            }
+        }
+  </script>
+</html>
