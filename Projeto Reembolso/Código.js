@@ -16,7 +16,7 @@
  * 2. Status inicial "Aguardando Aprovação" no momento da requisição. v
  * 3. Envio de e-mail ao solicitante confirmando a requisição. v
  * 4. Determinar e-mail do aprovador (exemplo via dicionário), v
- * com fallback default para "nuncio.lima@maisvidaservicos.com.br".
+ * com fallback default para "exemplo@exemplo.com.br".
  * 5. Enviar e-mail ao aprovador, com link para o Form de Aprovação V
  * (passando o código via parâmetro) e listando os links dos arquivos
  * enviados nas questões "Envie resumo da prestação" e "Envie comprovantes".
