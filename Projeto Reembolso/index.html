@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #c7dcd7; /* Cor de fundo principal */
+      }
+      .container {
+      background-color: #fff; /* O contêiner interno pode permanecer branco ou ser ajustado */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: auto;
+      }
+      h2 {
+      color: #0c7654; /* Cor primária para o título */
+      text-align: center;
+      margin-bottom: 20px;
+      }
+      label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #0c4454; /* Cor de destaque para os rótulos */
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      input[type="date"],
+      textarea,
+      select {
+        width: calc(100% - 22px); /* Largura padrão para inputs */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #0c7654; /* Borda dos campos de input com a cor primária */
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+      .radio-group label {
+        display: inline-block;
+        margin-right: 15px;
+        font-weight: normal;
+      }
+      .file-upload-section {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #0c7654; /* Borda superior da seção de upload de arquivo */
+      }
+      .file-upload-section label {
+        margin-bottom: 10px;
+      }
+      button {
+        background-color: #0c7654; /* Cor primária para o botão */
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 20px;
+      }
+      button:hover {
+        background-color: #0c4454; /* Cor de destaque ao passar o mouse no botão */
+      }
+      .loading-message {
+        text-align: center;
+        color: #0c7654; /* Cor primária para a mensagem de carregamento */
+        margin-top: 10px;
+        display: none;
+      }
+      .form-box {
+        border: 1px solid #0c7654; /* Borda da caixa */
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9fdfc; /* Um fundo levemente diferente para a caixa */
+      }
+      .form-box-title {
+        color: #0c7654;
+        font-size: 1.1em;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .form-row {
+        display: flex; /* Habilita flexbox para alinhar itens */
+        flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha se não houver espaço */
+        justify-content: space-between; /* Espaça os itens uniformemente */
+        margin-bottom: 0; /* Remove margem inferior padrão das rows */
+      }
+      .form-group {
+        flex: 1; /* Faz os grupos ocuparem espaço igual */
+        min-width: 280px; /* Largura mínima para evitar que fiquem muito apertados */
+        margin-right: 15px; /* Espaço entre os grupos */
+        margin-bottom: 15px; /* Espaço abaixo de cada grupo */
+      }
+      .form-group:nth-child(2n) { /* Remove a margem direita do segundo item em cada linha */
+        margin-right: 0;
+      }
+      /* Ajuste para inputs dentro de form-group */
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="number"],
+      .form-group input[type="date"],
+      .form-group input[type="time"] {
+        width: 100%; /* Faz o input ocupar 100% da largura do seu form-group */
+        margin-bottom: 0; /* Remove margem inferior padrão do input, pois o form-group já tem */
+      }
+      .form-group datalist {
+        width: 100%; /* Garante que o datalist se ajuste */
+      }
+
+      /* Ajuste para quando há apenas um item em uma linha, para que ele ocupe a largura total */
+      .form-row.single-item .form-group {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      /* Media query para telas menores (empilha os campos) */
+      @media (max-width: 600px) {
+        .form-group {
+          flex: 100%; /* Ocupa 100% da largura em telas pequenas */
+          margin-right: 0; /* Remove margem direita em telas pequenas */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Solicitação de Reembolso</h2>
+      <form id="solicitacaoReembolso">
+
+        <div class="form-box">
+          <h3 class="form-box-title">Informações Pessoais</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="recipientName">Nome do Solicitante:</label>
+              <input type="text" id="recipientName" name="recipientName" required>
+            </div>
+            <div class="form-group">
+              <label for="recipientEmail">Email do Solicitante:</label>
+              <input type="email" id="recipientEmail" name="recipientEmail" required>
+            </div>
+             <div class="form-row single-item"> 
+              <div class="form-group">
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-box">
+          <h3 class="form-box-title">Despesas</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo de despesa:</label>
+              <div class="radio-group">
+                
+                  <label for="compras">Compras:</label>
+                  <input type="radio" id="compras" name="tipo" value="Compras" required>
+                
+                  <label for="viagens">Viagens:</label>
+                  <input type="radio" id="viagens" name="tipo" value="Viagens">
+                
+                
+                  <label for="outros">Outros tipos:</label>
+                  <input type="radio" id="outros" name="tipo" value="Outros tipos">
+                
+              </div>
+              <div class="form-group">
+                <label for="valor">Valor Total</label>
+                <input type="number" id="valor" name="valor" required>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <label for="observations">Observações e justificativas:</label>
+    <textarea id="observations" name="observations" rows="4"></textarea>
+
+    <div class="form-box">
+      <h3 class="form-box-title">Envio de Documentos</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prestacao">Envie resumo da prestação (Imagem ou PDF):</label>
+          <input type="file" id="prestacao" name="prestacao" accept="image/*, application/pdf" multiple required>
+        </div>
+        <div class="form-group">
+          <label for="comprovantes">Envie comprovantes (Imagens ou PDFs):</label>
+          <input type="file" id="comprovantes" name="comprovantes" accept="image/*, application/pdf" multiple required>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit">Enviar Formulário</button>
+    <div class="loading-message" id="loadingMessage">Enviando dados...</div>
+  </form>
+  </body>
+</html>
+<script>
+
+  document.getElementById('solicitacaoReembolso').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('loadingMessage').style.display = 'block';
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
+
+    // Coleta dados de texto e select
+    // A lista de campos a serem ignorados aqui deve ser apenas os inputs de arquivo
+    for (let [key, value] of formData.entries()) {
+      if (key !== 'comprovantes' && key !== 'prestacao') {
+        data[key] = value;
+      }
+    }
+
+    // Coleta as imagens como Base64
+    const fileReaders = [];
+    const imageFields = ['prestacao', 'comprovantes']
+
+    imageFields.forEach(field => {
+      const fileInput = document.getElementById(field);
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        fileReaders.push(new Promise((resolve) => {
+          reader.onload = function(event) {
+            data[field] = event.target.result; // Armazena a imagem como Base64
+            resolve();
+          };
+          reader.readAsDataURL(file);
+        }));
+      } else {
+        data[field] = ''; // Garante que o campo existe, mesmo que vazio
+      }
+    });
+
+    Promise.all(fileReaders).then(() => {
+      google.script.run
+        .withSuccessHandler(function() {
+          alert('Formulário enviado com sucesso!');
+          form.reset(); // Limpa o formulário
+          document.getElementById('loadingMessage').style.display = 'none'; // Esconde mensagem de carregamento
+          // Re-preenche data e hora
+          const now = new Date();
+          document.getElementById('currentDate').value = now.toISOString().split('T')[0];
+          document.getElementById('currentTime').value = now.toTimeString().split(' ')[0].substring(0, 5);
+        })
+        .withFailureHandler(function(error) {
+          alert('Erro ao enviar o formulário: ' + error.message);
+          document.getElementById('loadingMessage').style.display = 'none'; // Esconde mensagem de carregamento
+        })
+        .processForm(data);
+    }).catch(error => {
+      alert('Erro ao processar as imagens: ' + error.message);
+      document.getElementById('loadingMessage').style.display = 'none'; // Esconde mensagem de carregamento
+    });
+  });
+</script>
